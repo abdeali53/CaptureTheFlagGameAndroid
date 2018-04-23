@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+
+    <Spinner
+        android:id="@+id/spinnerTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/country_arrays" />
+
+    <Button
+        android:id="@+id/btnTrackLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btnTrackMe_Click"
+        android:text="Track Me" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:onClick="btn_ViewGame"
+        android:text="Admin Login To View Game" />
+</LinearLayout>

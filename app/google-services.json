@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "849958111271",
+    "firebase_url": "https://democaptureflag.firebaseio.com",
+    "project_id": "democaptureflag",
+    "storage_bucket": "democaptureflag.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849958111271:android:4272cd35ef892b5c",
+        "android_client_info": {
+          "package_name": "com.abdeali.democaptureflagproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849958111271-9jnolmh20p56g6b7v34iem6ln44u3gpo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ5iF5A_izYufi_OG-8WRPzPlRIJAD2Uo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

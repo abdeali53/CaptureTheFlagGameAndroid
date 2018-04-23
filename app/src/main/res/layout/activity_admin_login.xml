@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal">
+
+
+    <EditText
+        android:id="@+id/editTextEmailId"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Enter Username"
+        android:inputType="textPersonName" />
+
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextEmailId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Enter Password"
+        android:inputType="textPersonName"
+        android:password="true" />
+
+
+    <Switch
+        android:id="@+id/switchRememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPassword"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="49dp"
+        android:layout_marginTop="50dp"
+        android:text="Remember Me" />
+
+
+    <Button
+        android:id="@+id/btnLoginClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switchRememberMe"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:text="Login" />
+
+
+</RelativeLayout>
