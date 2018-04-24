@@ -25,24 +25,24 @@ public class LatLngConstant {
         return latLngs;
     }
     public static ArrayList<LatLng> getprisonALatLong(){
-        prisonALatLong.add(new LatLng(43.773367, -79.334998));
-        prisonALatLong.add(new LatLng(43.773410, -79.334821));
-        prisonALatLong.add(new LatLng(43.774328, -79.335229));
-        prisonALatLong.add(new LatLng(43.774290, -79.335379));
+        prisonALatLong.add(new LatLng(43.774192,-79.335084));
+        prisonALatLong.add(new LatLng(43.774222,-79.334977));
+        prisonALatLong.add(new LatLng(43.774119,-79.334945));
+        prisonALatLong.add(new LatLng(43.774100,-79.335052));
         return prisonALatLong;
     }
 
     public static ArrayList<LatLng> getprisonBLatLong(){
-        prisonBLatLong.add(new LatLng(43.773367, -79.334998));
-        prisonBLatLong.add(new LatLng(43.773410, -79.334821));
-        prisonBLatLong.add(new LatLng(43.774328, -79.335229));
-        prisonBLatLong.add(new LatLng(43.774290, -79.335379));
+        prisonBLatLong.add(new LatLng(43.773848,-79.334956));
+        prisonBLatLong.add(new LatLng(43.773889,-79.334862));
+        prisonBLatLong.add(new LatLng(43.773793,-79.334824));
+        prisonBLatLong.add(new LatLng(43.773766,-79.334924));
         return prisonBLatLong;
     }
 
     public static ArrayList<LatLng> getdivideLatLong(){
-        divideLatLong.add(new LatLng(43.773367, -79.334998));
-        divideLatLong.add(new LatLng(43.773410, -79.334821));
+        divideLatLong.add(new LatLng(43.773879,-79.335226));
+        divideLatLong.add(new LatLng(43.773945,-79.335005));
 
         return divideLatLong;
     }

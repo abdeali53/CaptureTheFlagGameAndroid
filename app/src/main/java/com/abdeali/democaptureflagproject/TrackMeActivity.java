@@ -55,23 +55,13 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
     DatabaseReference databaseReference;
     ChildEventListener childEventListener;
     ValueEventListener valueEventListener;
-//// Flag A
-//    LatLng FlagALatLong = new LatLng(43.774269,-79.335246);
-//    //Flag B
-//    LatLng FlagBLatLong = new LatLng(43.773521,-79.334919);
-    //Google MAp
+
     ArrayList<Marker> markers = new ArrayList<>();
     private GoogleApiClient googleApiClient;
     protected LocationManager locationManager;
     private LocationListener locationListener;
     public GoogleMap googleMap;
     private String PlayerReferenceId;
-
-//    private ArrayList<LatLng> latLngs = new ArrayList<LatLng>();
-//    private ArrayList<LatLng> prisonALatLong = new ArrayList<>();
-//    private ArrayList<LatLng> prisonBLatLong = new ArrayList<>();
-//    private ArrayList<LatLng> divideLatLong = new ArrayList<>();
-
 
     private TextView tvGameStatus;
     private Button btnStartGame;
@@ -83,28 +73,6 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
         databaseReference = FirebaseDatabase.getInstance().getReference();
         tvGameStatus = findViewById(R.id.tvGameStatus);
         btnStartGame = findViewById(R.id.btnStartGame);
-
-        //Field LatLong
-//        latLngs.add(new LatLng(43.773367, -79.334998));
-//        latLngs.add(new LatLng(43.773410, -79.334821));
-//        latLngs.add(new LatLng(43.774328, -79.335229));
-//        latLngs.add(new LatLng(43.774290, -79.335379));
-
-        //Divide Team LatLong
-//        divideLatLong.add(new LatLng(43.773879,-79.335226));
-//        divideLatLong.add(new LatLng(43.773945,-79.335005));
-        //Team A Prison LatLong
-//        prisonALatLong.add(new LatLng(43.774192,-79.335084));
-//        prisonALatLong.add(new LatLng(43.774222,-79.334977));
-//        prisonALatLong.add(new LatLng(43.774119,-79.334945));
-//        prisonALatLong.add(new LatLng(43.774100,-79.335052));
-//        //43.774100 , -79.335052
-//        //Team B Prison LatLong
-//        prisonBLatLong.add(new LatLng(43.773848,-79.334956));
-//        prisonBLatLong.add(new LatLng(43.773889,-79.334862));
-//        prisonBLatLong.add(new LatLng(43.773793,-79.334824));
-//        prisonBLatLong.add(new LatLng(43.773766,-79.334924));
-
         initMap();
         getUpdateOnMap();
         valueListnerOnGame();
@@ -133,9 +101,8 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
 
                 }
             };
-            databaseReference.child("Player").addValueEventListener(valueEventListener);
-
         }
+        databaseReference.child("Player").addValueEventListener(valueEventListener);
     }
 
     public void valueListnerOnGame(){
@@ -143,6 +110,7 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("isStart").getValue(Boolean.class)){
+                    btnStartGame.setVisibility(View.INVISIBLE);
                     btnStartGame.setBackgroundColor(Color.GREEN);
                     btnStartGame.setEnabled(true);
                     tvGameStatus.setText(
@@ -151,7 +119,6 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
                     );
                 }
                 else{
-                    btnStartGame.setBackgroundColor(Color.RED);
                     btnStartGame.setEnabled(false);
                     tvGameStatus.setText("Game Not Started.");
                 }
@@ -203,7 +170,6 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
         List<Player> teamBPlayers = new ArrayList<>();
 
         if(players.size() != 0) {
-//            googleMap.clear();
             if(markers.size() != 0){
                 for (Marker maker: markers) {
                     maker.remove();
@@ -212,15 +178,19 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
             for (Player player : players) {
 
                 LatLng latLng = new LatLng(player.latitude,player.longitude);
+                if(player.teamName.equals("Canada")){
+                    teamAPlayers.add(player);
+                }
+                else{
+                    teamBPlayers.add(player);
+                }
                 if(player.isCaught){
                     LatLng prisonLatLong;
                     if(player.teamName.equals("Canada")){
                         prisonLatLong = new LatLng(43.773870,-79.334855);
-                        teamAPlayers.add(player);
                     }
                     else{
                           prisonLatLong = new LatLng(43.774180, -79.335064);
-                          teamBPlayers.add(player);
                     }
                     markers.add(googleMap.addMarker(new MarkerOptions()
                             .position(prisonLatLong)
@@ -240,21 +210,33 @@ public class TrackMeActivity extends AppCompatActivity implements OnMapReadyCall
             }
             if(teamAPlayers.size() != 0 && teamBPlayers.size() != 0){
                 if(teamAPlayers.size() == teamBPlayers.size()){
-
+                    btnStartGame.setVisibility(View.VISIBLE);
+                    tvGameStatus.setText("Pressed Start Button to Start The Game.");
                     btnStartGame.setBackgroundColor(Color.GREEN);
                     btnStartGame.setEnabled(true);
                     btnStartGame.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             databaseReference.child("Game").child("isStart").setValue(true);
+                            tvGameStatus.setText("Game is in Progress");
+                            btnStartGame.setVisibility(View.INVISIBLE);
                         }
                     });
                 }
                 else{
+                    btnStartGame.setVisibility(View.VISIBLE);
                     btnStartGame.setBackgroundColor(Color.RED);
                     btnStartGame.setEnabled(false);
+                    tvGameStatus.setText("Game Not Started. Need Equal Player in each team.");
                     databaseReference.child("Game").child("isStart").setValue(false);
                 }
+            }
+            else{
+                btnStartGame.setVisibility(View.INVISIBLE);
+                btnStartGame.setBackgroundColor(Color.RED);
+                btnStartGame.setEnabled(false);
+                tvGameStatus.setText("Game Not Started. Waiting For Player to Join");
+                databaseReference.child("Game").child("isStart").setValue(false);
             }
         }
     }
