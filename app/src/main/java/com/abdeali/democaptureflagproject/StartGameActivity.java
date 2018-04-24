@@ -36,7 +36,7 @@ public class StartGameActivity extends AppCompatActivity {
 
     private String PlayerReferenceId;
     private String TeamName;
-    private float previousDistanceBetweeenFlag = 0, cuurentDistanceBetweeenFlag = 0;
+    private float  previousDistanceBetweeenFlag = 0f , cuurentDistanceBetweeenFlag = 0f;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -182,14 +182,14 @@ public class StartGameActivity extends AppCompatActivity {
     }
 
     public void stopUsingGPS() {
-        if (locationManager != null) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            locationManager.removeUpdates(locationListener);
-        }
+//        if (locationManager != null) {
+//            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                return;
+//            }
+//            locationManager.removeUpdates(locationListener);
+//        }
     }
 
     public void calculateDistanceBetweenFlag(Location playerLocation) {
@@ -198,14 +198,14 @@ public class StartGameActivity extends AppCompatActivity {
         flag.setLongitude(FlagLatLng.longitude);
         cuurentDistanceBetweeenFlag = playerLocation.distanceTo(flag);
 
-        if (previousDistanceBetweeenFlag == 0) {
-            previousDistanceBetweeenFlag = cuurentDistanceBetweeenFlag;
-        }
+//        if (previousDistanceBetweeenFlag == 0) {
+//            previousDistanceBetweeenFlag = cuurentDistanceBetweeenFlag;
+//        }
 
         if (previousDistanceBetweeenFlag < cuurentDistanceBetweeenFlag) {
-            tvFlagStatus.setText("You are moving away from flag. Distance :" + cuurentDistanceBetweeenFlag);
+            tvFlagStatus.setText("Your Flag Distance :" + cuurentDistanceBetweeenFlag + " m");
         } else {
-            tvFlagStatus.setText("You are moving closer to flag. Distance :" + cuurentDistanceBetweeenFlag);
+            tvFlagStatus.setText("Your Flag Distance :" + cuurentDistanceBetweeenFlag + "m");
         }
         if (cuurentDistanceBetweeenFlag < 5) {
             btnCapture.setVisibility(View.VISIBLE);

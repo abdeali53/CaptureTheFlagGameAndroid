@@ -18,12 +18,13 @@ public class LatLngConstant {
     //Flag B === IND
     private static LatLng FlagBLatLong = new LatLng(43.773521,-79.334919);
     public static ArrayList<LatLng> getGameFieldLatLngs(){
-        latLngs.add(new LatLng(43.773367, -79.334998));
+        latLngs.add(new LatLng(43.772879, -79.337818));
         latLngs.add(new LatLng(43.773410, -79.334821));
         latLngs.add(new LatLng(43.774328, -79.335229));
-        latLngs.add(new LatLng(43.774290, -79.335379));
+        latLngs.add(new LatLng(43.773729, -79.338131));
         return latLngs;
     }
+
     public static ArrayList<LatLng> getprisonALatLong(){
         prisonALatLong.add(new LatLng(43.774192,-79.335084));
         prisonALatLong.add(new LatLng(43.774222,-79.334977));
@@ -41,12 +42,11 @@ public class LatLngConstant {
     }
 
     public static ArrayList<LatLng> getdivideLatLong(){
-        divideLatLong.add(new LatLng(43.773879,-79.335226));
+        divideLatLong.add(new LatLng(43.773331,-79.337992));
         divideLatLong.add(new LatLng(43.773945,-79.335005));
 
         return divideLatLong;
     }
-
     public static LatLng getFlagALatLong(){
         return FlagALatLong;
     }
