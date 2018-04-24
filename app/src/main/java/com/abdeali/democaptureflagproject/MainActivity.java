@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         if(location != null && !etName.getText().toString().isEmpty()){
             Player player = new Player(etName.getText().toString(),location.getLatitude(),location.getLongitude(),String.valueOf(spinnerTeam.getSelectedItem()),false);
             databaseReference.setValue(player);
-            Intent intent = new Intent(getBaseContext(), TrackMeActivity.class);
+            Intent intent = new Intent(getBaseContext(), StartGameActivity.class);
             intent.putExtra("PlayerReferenceId", databaseReference.getKey());
             intent.putExtra("PlayerName", etName.getText().toString());
             intent.putExtra("TeamName", String.valueOf(spinnerTeam.getSelectedItem()));

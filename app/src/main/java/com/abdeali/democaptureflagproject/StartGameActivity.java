@@ -35,6 +35,7 @@ public class StartGameActivity extends AppCompatActivity {
     private Button btnCapture;
 
     private String PlayerReferenceId;
+    private String TeamName;
     private float previousDistanceBetweeenFlag = 0, cuurentDistanceBetweeenFlag = 0;
 
     FirebaseDatabase firebaseDatabase;
@@ -60,7 +61,10 @@ public class StartGameActivity extends AppCompatActivity {
         btnCapture = findViewById(R.id.btnCapture);
 
         PlayerReferenceId = getIntent().getStringExtra("PlayerReferenceId");
-        tvTeamName.setText(getIntent().getStringExtra("TeamName"));
+        TeamName = getIntent().getStringExtra("TeamName");
+        tvTeamName.setText("Team: " + TeamName);
+        tvLatitude.setText(Double.toString(getIntent().getDoubleExtra("PlayerLatitude",0)));
+        tvLongitude.setText(Double.toString(getIntent().getDoubleExtra("PlayerLongitude",0)));
         btnCapture.setVisibility(View.INVISIBLE);
         Log.d(TAG, "onCreate: ======================PlayerReferenceId======================== " + PlayerReferenceId);
         FlagLatLng = getIntent().getStringExtra("TeamName").equals("Canada") ? LatLngConstant.getFlagALatLong() : LatLngConstant.getFlagBLatLong();
@@ -78,6 +82,7 @@ public class StartGameActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 if (location != null) {
                     boolean isCaught = false;
+                    calculateDistanceBetweenFlag(location);
                     LatLng playerLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                     isCaught = isPlayerCaught(playerLatLng, LatLngConstant.getGameFieldLatLngs());
                     if (isCaught) {
@@ -92,6 +97,9 @@ public class StartGameActivity extends AppCompatActivity {
                     updatePlayerLocation.child("latitude").setValue(location.getLatitude());
                     updatePlayerLocation.child("longitude").setValue(location.getLongitude());
                     updatePlayerLocation.child("isCaught").setValue(isCaught);
+
+                    // to check from value uodate from firebase
+
 
                 }
             }
@@ -151,25 +159,8 @@ public class StartGameActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        databaseReference.child("Game").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("isStart").getValue(Boolean.class)){
-                   tvGameStatus.setText(
-                           dataSnapshot.child("winner").getValue(String.class).isEmpty() ? "Game is in Progress" : "Team "
-                                                + dataSnapshot.child("winner").getValue(String.class) +" won."
-                   );
-                }
-                else{
-                   tvGameStatus.setText("Please wait Admin to Start Game");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        valueListnerOnGame();
+        manualFirebasseUpdate();
     }
 
     @Override
@@ -212,23 +203,80 @@ public class StartGameActivity extends AppCompatActivity {
         }
 
         if (previousDistanceBetweeenFlag < cuurentDistanceBetweeenFlag) {
-            tvGameStatus.setText("You are moving away from flag. Distance :" + cuurentDistanceBetweeenFlag);
+            tvFlagStatus.setText("You are moving away from flag. Distance :" + cuurentDistanceBetweeenFlag);
         } else {
-            tvGameStatus.setText("You are moving closer to flag. Distance :" + cuurentDistanceBetweeenFlag);
+            tvFlagStatus.setText("You are moving closer to flag. Distance :" + cuurentDistanceBetweeenFlag);
         }
-        if (cuurentDistanceBetweeenFlag < 2) {
+        if (cuurentDistanceBetweeenFlag < 5) {
             btnCapture.setVisibility(View.VISIBLE);
             btnCapture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    tvGameStatus.setText("Your Team Win!!!!! Hurray!!!!!!!!");
+                    databaseReference.child("Game").child("winner").setValue(TeamName);
                     Log.d(TAG, "onClick: ============================Player Won======================");
                 }
             });
+        }
+        else{
+            btnCapture.setVisibility(View.INVISIBLE);
         }
         previousDistanceBetweeenFlag = cuurentDistanceBetweeenFlag;
 
     }
 
+    public void manualFirebasseUpdate(){
+        DatabaseReference updatePlayerLocation = databaseReference.child("Player").child(PlayerReferenceId);
+        updatePlayerLocation.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean isCaught = false;
+
+                LatLng playerLatLng = new LatLng(dataSnapshot.child("latitude").getValue(Double.class),
+                        dataSnapshot.child("longitude").getValue(Double.class));
+                Location playerLocation = new Location("");
+                playerLocation.setLatitude(playerLatLng.latitude);
+                playerLocation.setLongitude(playerLatLng.longitude);
+
+                calculateDistanceBetweenFlag(playerLocation);
+                isCaught = isPlayerCaught(playerLatLng, LatLngConstant.getGameFieldLatLngs());
+                if (isCaught) {
+                    tvGameStatus.setText("You are caught and transfer to prison.");
+//                                stopUsingGPS();
+                }
+                Log.d(TAG, "onLocationChanged: ============================Change Detected=============");
+                tvLatitude.setText("Lat " + playerLocation.getLatitude());
+                tvLongitude.setText("Long " + playerLocation.getLongitude());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void valueListnerOnGame(){
+        databaseReference.child("Game").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("isStart").getValue(Boolean.class)){
+                    tvGameStatus.setText(
+                            dataSnapshot.child("winner").getValue(String.class).isEmpty() ? "Game is in Progress" : "Team "
+                                    + dataSnapshot.child("winner").getValue(String.class) +" won."
+                    );
+                }
+                else{
+                    tvGameStatus.setText("Please wait Admin to Start Game");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     ///Game Status
 
