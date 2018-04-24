@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void btn_ViewGame(View view){
-        Intent intent = new Intent(getBaseContext(), AdminLoginActivity.class);
-        startActivity(intent);
-    }
+//    public void btn_ViewGame(View view){
+//        Intent intent = new Intent(getBaseContext(), AdminLoginActivity.class);
+//        startActivity(intent);
+//    }
 
 }
